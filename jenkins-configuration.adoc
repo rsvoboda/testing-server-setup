@@ -20,7 +20,7 @@ jenkins-cli list-plugins
 === List plugins
 Execute `jenkins-cli groovy = < plugins.groovy > plugins.txt` to list installed plugins.
 
-plugins.groovy:
+link:plugins.groovy[]:
 [source,groovy]
 ----
 include::plugins.groovy[]
@@ -90,7 +90,7 @@ This is still quite young effort and using Jenkins API provides good flexibility
 === JDK setup
 Execute `jenkins-cli groovy = < configure-jdks.groovy` to configure JDK installations for Jenkins.
 
-configure-jdks.groovy:
+link:configure-jdks.groovy[]:
 [source,groovy]
 ----
 include::configure-jdks.groovy[]
@@ -103,7 +103,7 @@ On the other hand Maven setup is working well.
 === Maven setup
 Execute `jenkins-cli groovy = < configure-maven.groovy` to configure Maven installations for Jenkins.
 
-configure-jdks.groovy:
+link:configure-jdks.groovy[]:
 [source,groovy]
 ----
 include::configure-maven.groovy[]
