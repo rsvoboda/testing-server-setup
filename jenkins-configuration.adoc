@@ -1,0 +1,110 @@
+= Jenkins configuration
+
+Prerequisite: link:rhel7-installation.adoc[]
+
+== Jenkins CLI - plugins
+
+=== Plugins installation
+[source,shell]
+----
+wget http://SERVER:PORT/jnlpJars/jenkins-cli.jar
+alias jenkins-cli='java -jar ~/Downloads/jenkins-cli.jar -s http://SERVER:PORT/ -auth USER:TOKEN'
+
+jenkins-cli help
+jenkins-cli install-plugin maven-plugin blueocean pipeline-maven pipeline-maven description-setter ansicolor
+jenkins-cli safe-restart
+jenkins-cli list-plugins
+----
+
+
+=== List plugins
+Execute `jenkins-cli groovy = < plugins.groovy > plugins.txt` to list installed plugins.
+
+plugins.groovy:
+[source,groovy]
+----
+include::plugins.groovy[]
+----
+
+
+=== Update plugins
+[source,shell]
+----
+UPDATE_LIST=$( jenkins-cli list-plugins 2>/dev/null | grep -e ')$' | cut -d" " -f1 );
+if [ ! -z "${UPDATE_LIST}" ]; then
+    echo Updating Jenkins Plugins: ${UPDATE_LIST};
+    jenkins-cli install-plugin ${UPDATE_LIST}
+fi
+jenkins-cli safe-restart
+----
+
+
+== SDKMan
+Using https://sdkman.io/ to manage Java and Maven installations.
+
+=== SDKMan installation
+[source,shell]
+----
+yum install -y unzip zip
+
+su - jenkins -s/bin/bash
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+sed -i -e 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' ~/.sdkman/etc/config
+----
+
+=== Tools installation
+Switch to jenkins user via `su - jenkins -s/bin/bash`
+
+[source,shell]
+----
+sdk list maven
+sdk list java
+
+sdk install java 13.ea.15-open
+sdk install java 12.0.0-open
+sdk install java 11.0.2-open
+sdk install java 8.0.201-oracle
+sdk install java 1.0.0-rc-14-grl
+sdk install java 1.0.0-rc-15-grl
+
+sdk install maven 3.6.0
+sdk install maven 3.5.4
+sdk default maven 3.6.0
+
+ls /var/lib/jenkins/.sdkman/candidates/
+ls /var/lib/jenkins/.sdkman/candidates/*/
+----
+
+You can add above commands into Jenkins job or run them manually on the server.
+With Jenkins job way you may encounter unexpected issues if SDKMan was not executed yet.
+
+
+== Jenkins tools setup
+Configuration via groovy scripts and Jenkins API.
+
+Alternative way for managing Jenkins is via using https://github.com/jenkinsci/configuration-as-code-plugin effort.
+This is still quite young effort and using Jenkins API provides good flexibility.
+
+=== JDK setup
+Execute `jenkins-cli groovy = < configure-jdks.groovy` to configure JDK installations for Jenkins.
+
+configure-jdks.groovy:
+[source,groovy]
+----
+include::configure-jdks.groovy[]
+----
+
+It's suggested to open http://SERVER:PORT/configureTools/, review configured tools and press `Save` button.
+I noticed unexpected behavior after restart where JDK setup was not correctly persisted.
+On the other hand Maven setup is working well.
+
+=== Maven setup
+Execute `jenkins-cli groovy = < configure-maven.groovy` to configure Maven installations for Jenkins.
+
+configure-jdks.groovy:
+[source,groovy]
+----
+include::configure-maven.groovy[]
+----
