@@ -11,7 +11,8 @@ wget http://SERVER:PORT/jnlpJars/jenkins-cli.jar
 alias jenkins-cli='java -jar ~/Downloads/jenkins-cli.jar -s http://SERVER:PORT/ -auth USER:TOKEN'
 
 jenkins-cli help
-jenkins-cli install-plugin maven-plugin blueocean pipeline-maven description-setter ansicolor job-dsl pipeline-utility-steps
+jenkins-cli install-plugin maven-plugin blueocean pipeline-maven description-setter ansicolor
+jenkins-cli install-plugin job-dsl pipeline-utility-steps pipeline-model-definition
 jenkins-cli safe-restart
 jenkins-cli list-plugins
 ----
