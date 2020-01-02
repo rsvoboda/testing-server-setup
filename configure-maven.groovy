@@ -10,6 +10,7 @@ def desc = inst.getDescriptor("hudson.tasks.Maven")
 def versions = [
   "maven-3.5.4": "/var/lib/jenkins/.sdkman/candidates/maven/3.5.4",
   "maven-3.6.0": "/var/lib/jenkins/.sdkman/candidates/maven/3.6.0",
+  "maven-3.6.3": "/var/lib/jenkins/.sdkman/candidates/maven/3.6.3",
 ]
 def installations = [];
 
