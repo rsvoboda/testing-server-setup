@@ -117,3 +117,14 @@ link:configure-jdks.groovy[]:
 ----
 include::configure-maven.groovy[]
 ----
+
+=== Pipelines troubles
+
+==== Pipeline gets killed
+It's probably because of https://issues.jenkins-ci.org/browse/JENKINS-48300
+
+You might see `JENKINS-48300: if on an extremely laggy filesystem, consider -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=86400)` in the log of the pipeline.
+
+Message mentions slow disk but this also happens when the system is under heavy load - e.g. native-image execution.
+
+In RHEL7 case `HEARTBEAT_CHECK_INTERVAL` can be set in `/etc/sysconfig/jenkins` ,search for `JENKINS_JAVA_OPTIONS`.
